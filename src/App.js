@@ -1,25 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { Component} from 'react';
+import FreeFullBooksApp from './FreeFullBooksApp';
 
-function App() {
+class App extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      showResults: false
+    };
+  }
+
+  showResults(show) {
+    this.setState({
+      showResults: show
+    });
+  }
+
+  changeScreen(titles){
+    const titlesFormatted = titles;
+    console.log(titlesFormatted)
+  }
+
+render(){
+  const results = this.state.showResults;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <div>
+  <FreeFullBooksApp
+  showResults={show => this.showResults(show)}
+  changeScreen= {titles => this.changeScreen(titles)}
+  ></FreeFullBooksApp>
+     {results
+               ? <div>{this.titlesFormatted}</div>
+              : <div>results here</div>
+              } 
+                 </div>
+  )
+}
 }
 
 export default App;
