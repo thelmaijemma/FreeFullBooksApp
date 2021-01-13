@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Results from './Results';
 
 class FreeFullBooksApp extends Component {
 
@@ -11,7 +12,8 @@ url ='https://www.googleapis.com/books/v1/volumes?q=';
         {
         search: "book",
         type: "all",
-        print: "all"
+        print: "all",
+        data: []
         
     }
 ]
@@ -50,21 +52,24 @@ handleSubmit(e) {
         return res.json();
       })
       .then(data => {
-        const displayFinal = this.displayResults(data);
-        this.props.changeScreen(displayFinal);
+        //const displayFinal = this.displayResults(data);
+        //console.log("this is displayfinal"+{displayFinal})
+        //this.props.changeScreen(displayFinal);
+        console.log(data);
+        this.setState({
+            data: data.items
+        });
       }) 
       .catch(err => {
         this.setState({
           error: err.message
         });
       });
+
+  
   }
 
-  displayResults(data){
-    for(let i=0; i< 10; i++){
-         return <div className="title">Title: data.items[i].title </div>
-            } 
-      }
+
   
 
 
@@ -85,11 +90,14 @@ handleSubmit(e) {
       })
   }
 
+
   render() {
 
 const bookOptions = ["full", "free-ebooks"]
-const printOptions = ["all", "books", "magazines"]
-         
+const printOptions = ["all", "books", "magazines"];
+
+const isData = this.state.data;
+
 return (
     <div> 
         <form className="search_form" onSubmit={e => this.handleSubmit(e)}>
@@ -122,7 +130,14 @@ return (
                               onChange={e => this.searchUpdate(e.target.value)}/>
                 <button type="submit" onClick={e => this.props.showResults(true)}>Submit</button>
               </form>
+              {isData
+              ? <Results
+              title={this.state.data}
+              ></Results>
+              : <div></div>
+                }
       </div>
+      
     );
   }
 }
